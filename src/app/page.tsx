@@ -1,63 +1,62 @@
 import Link from 'next/link';
-
 import { auth } from '@/server/auth';
 import { HydrateClient } from '@/trpc/server';
 import { UserActions } from './_components/action';
+import { BanknotesIcon } from '@heroicons/react/24/outline';
 
 export default async function Home() {
 	const session = await auth();
 
 	return (
 		<HydrateClient>
-			<main className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-[#2e026d] to-[#15162c] text-white'>
+			<main className='flex min-h-screen flex-col items-center justify-center bg-gradient-to-b from-indigo-600 to-indigo-900 text-white'>
 				<div className='container flex flex-col items-center justify-center gap-12 px-4 py-16'>
-					<h1 className='font-extrabold text-5xl tracking-tight sm:text-[5rem]'>
-						Create <span className='text-[hsl(280,100%,70%)]'>T3</span> App
+					<h1 className='font-extrabold text-5xl tracking-tight text-center sm:text-[5rem]'>
+						Expense <span className='text-indigo-200'>Tracker</span>
 					</h1>
-					<div className='grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-8'>
-						<Link
-							className='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20'
-							href='https://create.t3.gg/en/usage/first-steps'
-							target='_blank'
-						>
-							<h3 className='font-bold text-2xl'>First Steps →</h3>
-							<div className='text-lg'>
-								Just the basics - Everything you need to know to set up your database and
-								authentication.
-							</div>
-						</Link>
-						<Link
-							className='flex max-w-xs flex-col gap-4 rounded-xl bg-white/10 p-4 hover:bg-white/20'
-							href='https://create.t3.gg/en/introduction'
-							target='_blank'
-						>
-							<h3 className='font-bold text-2xl'>Documentation →</h3>
-							<div className='text-lg'>
-								Learn more about Create T3 App, the libraries it uses, and how to deploy it.
-							</div>
-						</Link>
-					</div>
-					<div className='flex flex-col items-center gap-2'>
-						<div className='w-full max-w-lg'>
-							{session ? (
-								<UserActions />
-							) : (
-								<p className='text-white text-xl'>Sign in to view your activity</p>
-							)}
-						</div>
 
-						<div className='flex flex-col items-center justify-center gap-4'>
-							<p className='text-center text-2xl text-white'>
-								{session && <span>Logged in as {session.user?.name}</span>}
-							</p>
+					<div className='grid grid-cols-1 gap-6 sm:grid-cols-2 md:gap-8 max-w-4xl'>
+						<Link
+							className='flex flex-col gap-4 rounded-xl bg-white/10 p-6 hover:bg-white/20 transition-all items-center justify-center'
+							href='/bank-accounts'
+						>
+							<BanknotesIcon className='h-12 w-12 text-indigo-200' />
+							<h3 className='font-bold text-2xl'>Manage Bank Accounts</h3>
+							<div className='text-lg text-center'>
+								Add, view, and manage your connected bank accounts
+							</div>
+						</Link>
+
+						{/* Additional feature cards can be added here */}
+					</div>
+
+					{session ? (
+						<div className='flex flex-col items-center gap-6 mt-8'>
+							<div className='w-full max-w-lg'>
+								<UserActions />
+							</div>
+
+							<div className='flex flex-col items-center justify-center gap-4'>
+								<p className='text-center text-xl text-indigo-100'>Logged in as {session.user?.name}</p>
+								<Link
+									href='/api/auth/signout'
+									className='rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20'
+								>
+									Sign out
+								</Link>
+							</div>
+						</div>
+					) : (
+						<div className='flex flex-col items-center gap-6 mt-8'>
+							<p className='text-indigo-100 text-xl'>Sign in to track your expenses</p>
 							<Link
-								href={session ? '/api/auth/signout' : '/api/auth/signin'}
+								href='/api/auth/signin'
 								className='rounded-full bg-white/10 px-10 py-3 font-semibold no-underline transition hover:bg-white/20'
 							>
-								{session ? 'Sign out' : 'Sign in'}
+								Sign in
 							</Link>
 						</div>
-					</div>
+					)}
 				</div>
 			</main>
 		</HydrateClient>

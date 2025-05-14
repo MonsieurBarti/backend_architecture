@@ -17,5 +17,9 @@ export default async function BankAccountsPage() {
 
 	const bankAccounts = await api.accountManagement.getAllBankAccounts();
 
-	return <BankAccountsList initialAccounts={bankAccounts} />;
+	return (
+		<div className="min-h-screen bg-gradient-to-b from-indigo-600 to-indigo-900">
+			<BankAccountsList initialAccounts={bankAccounts} />
+		</div>
+	);
 }
