@@ -12,6 +12,15 @@ export const BankAccountProps = z.object({
 });
 export type BankAccountProps = z.infer<typeof BankAccountProps>;
 
+export const BankAccountDto = z.object({
+	id: z.string().uuid(),
+	userId: z.string().uuid(),
+	name: BankName,
+	iban: z.string(),
+	bic: z.string(),
+});
+export type BankAccountDto = z.infer<typeof BankAccountDto>;
+
 export class BankAccount {
 	private readonly _id: string;
 	private readonly _userId: string;
@@ -52,7 +61,7 @@ export class BankAccount {
 		return this._bic;
 	}
 
-	public props(): BankAccountProps {
+	public dto() {
 		return {
 			id: this._id,
 			userId: this._userId,

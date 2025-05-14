@@ -2,7 +2,7 @@ import { z } from 'zod';
 import { inject, injectable } from 'inversify';
 import { ACCOUNT_MANAGEMENT_TOKENS } from '../../../account-management.tokens';
 import type { BankAccountReader } from '../../../domain/bank-account/bank-account.reader';
-import { BankAccountDto, BankAccountDtoMapper } from './bank-account.dto';
+import { BankAccountDto } from '../../../domain/bank-account/bank-account';
 
 export const GetAllBankAccountQueryProps = z.object({
 	userId: z.string().uuid(),
@@ -22,6 +22,6 @@ export class GetAllBankAccountQueryHandler {
 
 	public async execute({ props }: GetAllBankAccountQuery): Promise<BankAccountDto[]> {
 		const bankAccounts = await this.bankAccountReader.findByUserId(props.userId);
-		return bankAccounts.map(account => BankAccountDtoMapper.toDto(account));
+		return bankAccounts.map(account => account.dto());
 	}
 }
