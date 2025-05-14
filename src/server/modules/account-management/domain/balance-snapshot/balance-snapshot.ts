@@ -8,6 +8,14 @@ export const BalanceSnapshotProps = z.object({
 });
 export type BalanceSnapshotProps = z.infer<typeof BalanceSnapshotProps>;
 
+export const BalanceSnapshotDto = z.object({
+	id: z.string().uuid(),
+	bankAccountId: z.string().uuid(),
+	balance: z.number(),
+	recordedAt: z.date(),
+});
+export type BalanceSnapshotDto = z.infer<typeof BalanceSnapshotDto>;
+
 export class BalanceSnapshot {
 	private readonly _id: string;
 	private readonly _bankAccountId: string;
@@ -42,7 +50,7 @@ export class BalanceSnapshot {
 		return this._recordedAt;
 	}
 
-	public props(): BalanceSnapshotProps {
+	public dto(): BalanceSnapshotDto {
 		return {
 			id: this._id,
 			bankAccountId: this._bankAccountId,
